@@ -23,19 +23,36 @@
 
         @page {
             size: A4;
-            margin: 0; /* Let the .page container handle margins */
+            margin: 0;
         }
 
+        /* THE PAGE CONTAINER */
         .page {
             width: 210mm;
             height: 297mm;
             background: white;
-            /* Shifted content to the right with 15mm left padding */
             padding: 10mm 10mm 10mm 15mm; 
-            overflow: hidden;
             display: flex;
             flex-direction: column;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        /* SCREEN FIX: Auto-fit for Phone and Xiaomi Pad */
+        @media screen and (max-width: 210mm) {
+            .page {
+                /* 'zoom' fits the content to screen width without gaps */
+                zoom: 0.45; 
+                margin: 10px 0;
+            }
+        }
+
+        /* Adjust zoom for Tablets (Xiaomi Pad) */
+        @media screen and (min-width: 600px) and (max-width: 1000px) {
+            .page {
+                zoom: 0.8;
+                margin: 20px 0;
+            }
         }
 
         .header-university {
@@ -148,13 +165,12 @@
             font-family: inherit;
         }
 
-        /* FIXED QUESTION SHEET BORDER */
         .sheet {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             column-gap: 20px;
             border: 1px solid black; 
-            padding: 10px; /* Slightly reduced padding to ensure fit */
+            padding: 10px;
             margin-top: 5px;
             flex-grow: 1;
         }
@@ -200,15 +216,17 @@
             font-size: 16px;
         }
 
+        /* PRINT RESET: Standard A4, no zoom */
         @media print {
             body { background: white; padding: 0; }
             .btn-container { display: none; }
             .page { 
                 box-shadow: none; 
-                margin: 0; 
-                width: 210mm;
-                height: 297mm;
+                margin: 0 !important; 
+                width: 210mm !important;
+                height: 297mm !important;
                 border: none;
+                zoom: 1 !important; /* Force original size for PDF */
             }
         }
     </style>
